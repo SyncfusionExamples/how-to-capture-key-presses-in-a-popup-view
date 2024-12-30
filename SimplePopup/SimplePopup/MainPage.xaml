@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sfPopup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
+             xmlns:listview="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
+             xmlns:local="clr-namespace:SimplePopup"
+             x:Class="SimplePopup.MainPage">
+
+    <ContentPage.BindingContext>
+        <local:ViewModel/>
+    </ContentPage.BindingContext>
+    <local:CustomGrid x:Name="grid" Popup="{x:Reference popup}" RowDefinitions="80,*,50" ColumnDefinitions="*,50">
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Notes" HeightRequest="80" VerticalTextAlignment="Center" FontAttributes="Bold" FontSize="Medium" Padding="10"/>
+        <Image Grid.Column="1" Source="setting.png" HeightRequest="30" WidthRequest="30" >
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+            </Image.GestureRecognizers>
+        </Image>
+        <listview:SfListView Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding NotesList}" ItemSize="80" BackgroundColor="Bisque">
+            <listview:SfListView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout VerticalOptions="Center">
+                    <Label Text="{Binding Title}" FontAttributes="Bold" Padding="10"/>
+                        <Label Text="{Binding Description}"  Padding="10,5,10,5"/>
+                    </StackLayout>
+                </DataTemplate>
+            </listview:SfListView.ItemTemplate>
+        </listview:SfListView>
+        <Label Grid.Row="2" Grid.ColumnSpan="2" Text="Press 'O' key to open settings" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HeightRequest="30"/>
+        <sfPopup:SfPopup x:Name="popup" Closed="popup_Closed" ShowHeader="True" HeaderTitle="Settings" AutoSizeMode="Height">
+            <sfPopup:SfPopup.ContentTemplate>
+                <DataTemplate>
+                    <local:CustomGrid Popup="{x:Reference popup}" RowDefinitions="80,80,30" BackgroundColor="AliceBlue">
+                        <!-- Dark Mode Toggle -->
+                        <StackLayout Orientation="Horizontal" Margin="0,20,0,10" Grid.Row="0">
+                            <Label Text="Dark Mode" FontAttributes="Bold" VerticalOptions="Center" WidthRequest="170" Padding="20,0,50,0"/>
+                            <Switch x:Name="DarkModeSwitch" IsToggled="{Binding IsDarkModeEnabled}"/>
+                        </StackLayout>
+                        <!-- Notifications Toggle -->
+                        <StackLayout Orientation="Horizontal" Margin="0,10,0,20" Grid.Row="1">
+                            <Label Text="Notifications" FontAttributes="Bold" VerticalOptions="Center" WidthRequest="170" Padding="20,0,50,0"/>
+                            <Switch x:Name="NotificationsSwitch" IsToggled="{Binding AreNotificationsEnabled}" HorizontalOptions="End"/>
+                        </StackLayout>
+                        <Label Text="Press Enter key to close settings" FontAttributes="Bold" Grid.Row="2"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center" />
+                    </local:CustomGrid>
+                </DataTemplate>
+            </sfPopup:SfPopup.ContentTemplate>
+        </sfPopup:SfPopup>
+        </local:CustomGrid>
+    
+</ContentPage>
